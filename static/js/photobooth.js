@@ -23,7 +23,12 @@ function getLatestPhotoSet() {
 
 function updatePhoto(lastIndex) {
   index = (lastIndex + 1) % PHOTOS.length;
+
   srcElm = document.getElementById("carousel");
-  srcElm.src = PHOTOS[index];
+  srcElm.src = PHOTOS[index].url;
+
+  captionElm = document.getElementById("caption");
+  captionElm.textContent = PHOTOS[index].caption;
+
   return index;
 }

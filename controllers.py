@@ -60,7 +60,7 @@ class AllApprovedPhotos(BaseRequestHandler):
     photo_urls = []
     for photo in photos:
       url = "api/photo/%s" % photo.key.urlsafe()
-      photo_urls.append(url)
+      photo_urls.append({"url": url, "caption": photo.caption})
 
     self.response.headers['Content-Type'] = 'application/json'
     self.response.out.write(json.dumps(photo_urls))
