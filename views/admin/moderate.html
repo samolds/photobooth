@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block body %}
+<h2>Moderate</h2>
+
+<div>
+{% for photo in photos %}
+  <hr />
+  <p>{{ photo.caption }}</p>
+  <img src="/api/photo/{{ photo.key.urlsafe() }}" />
+  <small class="pull-right">Posted {{ photo.date.strftime("%m/%d/%Y") }}</small>
+  <div class="clearfix"></div>
+
+  {% if not photo.approved %}
+    <form action="/admin/approve/{{ photo.key.urlsafe() }}" enctype="multipart/form-data" method="post">
+      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Approve</button>
+    </form>
+  {% else %}
+    <p>Already approved</p>
+  {% endif %}
+{% endfor %}
+</div>
+{% endblock %}
