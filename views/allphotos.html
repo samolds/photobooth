@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="row">
+  <p><small class="pull-left"><a href="/photobooth">Photobooth</a></small></p>
+</div>
+{% for photo in photos %}
+<div class="col-sm-3 word-wrap">
+  <a href="{{ photo.url }}">
+    <img src="{{ photo.url }}" class="img-thumbnail" width="300" height="300" />
+  </a>
+  <p><small>{{ photo.time }}</small></p>
+  <p>{{ photo.caption }}</p>
+</div>
+{% endfor %}
+{% endblock %}

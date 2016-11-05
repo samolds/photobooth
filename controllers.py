@@ -10,7 +10,7 @@ import os
 
 
 
-DEBUG = True
+DEBUG = True # TODO turn this off
 
 
 
@@ -51,19 +51,39 @@ class Photobooth(BaseRequestHandler):
 
 
 
+def getAllApprovedPhotos():
+  query = Photo.query(Photo.approved == True).order(-Photo.date)
+  photos = query.fetch()
+
+  formatted_photos = []
+  for photo in photos:
+    url = "/api/photo/%s" % photo.key.urlsafe()
+    formatted_photos.append({
+      "url": url,
+      "caption": photo.caption,
+      "time": photo.date.strftime("%A %I:%M %p"),
+    })
+
+  return formatted_photos
+
+
+
+# handler for "/photobooth/all"
+class AllPhotos(BaseRequestHandler):
+  def get(self):
+    photos = getAllApprovedPhotos()
+    self.generate("allphotos.html", {
+      "photos": photos,
+    })
+
+
+
 # handler for "/api/allapprovedphotos"
 class AllApprovedPhotos(BaseRequestHandler):
   def get(self):
-    query = Photo.query(Photo.approved == True).order(-Photo.date)
-    photos = query.fetch()
-
-    photo_urls = []
-    for photo in photos:
-      url = "api/photo/%s" % photo.key.urlsafe()
-      photo_urls.append({"url": url, "caption": photo.caption})
-
+    photos = getAllApprovedPhotos()
     self.response.headers['Content-Type'] = 'application/json'
-    self.response.out.write(json.dumps(photo_urls))
+    self.response.out.write(json.dumps(photos))
 
 
 
@@ -90,6 +110,7 @@ class AdminPanel(BaseRequestHandler):
       is_admin = True
       loginout_url = users.create_logout_url("/")
       loginout_linktext = 'Logout'
+
     self.generate("admin/panel.html", {
       "IS_ADMIN": is_admin,
       "LOGINOUT_URL": loginout_url,
@@ -104,7 +125,19 @@ class Moderate(BaseRequestHandler):
     query = Photo.query(ancestor=db_key(DB_NAME)).order(-Photo.date)
     photos = query.fetch()
 
+    is_admin = False
+    loginout_url = users.create_login_url(self.request.uri)
+    loginout_linktext = 'Login'
+
+    if users.is_current_user_admin():
+      is_admin = True
+      loginout_url = users.create_logout_url("/")
+      loginout_linktext = 'Logout'
+
     self.generate("admin/moderate.html", {
+      "IS_ADMIN": is_admin,
+      "LOGINOUT_URL": loginout_url,
+      "LOGINOUT_LINKTEXT": loginout_linktext,
       "photos": photos,
     })
 
@@ -112,9 +145,20 @@ class Moderate(BaseRequestHandler):
 
 # handler for "/admin/approve/..."
 class Approve(BaseRequestHandler):
-  def post(self, photo_key):
+  def get(self, photo_key):
     key = ndb.Key(urlsafe=photo_key)
     photo = key.get()
     photo.approved = True
     photo.put()
-    self.redirect('/admin/moderate')
+    #self.redirect('/admin/moderate')
+
+
+
+# handler for "/admin/unapprove/..."
+class Unapprove(BaseRequestHandler):
+  def get(self, photo_key):
+    key = ndb.Key(urlsafe=photo_key)
+    photo = key.get()
+    photo.approved = False
+    photo.put()
+    #self.redirect('/admin/moderate')

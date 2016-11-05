@@ -2,11 +2,24 @@
 
 {% block script %}
 <script src="/static/js/photobooth.js"></script>
+<style>
+  body {
+    background-color: #111;
+  }
+</style>
 {% endblock %}
 
 {% block body %}
-<div class="pad">
-  <img id="carousel" src="https://c2.staticflickr.com/2/1475/24419013056_6122c991be_c.jpg"/>
+<div class="row">
+  <p><small class="pull-right"><a href="/photobooth/all">All Photos</a></small></p>
+</div>
+
+<img id="carousel" class="carousel"
+  src="https://c2.staticflickr.com/2/1475/24419013056_6122c991be_c.jpg"/>
+
+
+<div class="description">
+  <p><small class="pull-right" id="time">Sunday 12:09 PM</small></p>
   <h3 id="caption">Millcreek Gothic</h3>
 </div>
 {% endblock %}

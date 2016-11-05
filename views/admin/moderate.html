@@ -1,23 +1,50 @@
 {% extends "base.html" %}
 
+{% block script %}
+<script src="/static/js/photobooth.js"></script>
+{% endblock %}
+
 {% block body %}
 <h2>Moderate</h2>
+<p class="pull-right"><a href="{{ LOGINOUT_URL }}">{{ LOGINOUT_LINKTEXT }}</a></p>
+<p>
+  Make sure to frequently <a href="/admin/moderate">refresh</a> to see latest photos.
+</p>
 
-<div>
-{% for photo in photos %}
-  <hr />
-  <p>{{ photo.caption }}</p>
-  <img src="/api/photo/{{ photo.key.urlsafe() }}" />
-  <small class="pull-right">Posted {{ photo.date.strftime("%m/%d/%Y") }}</small>
-  <div class="clearfix"></div>
-
-  {% if not photo.approved %}
-    <form action="/admin/approve/{{ photo.key.urlsafe() }}" enctype="multipart/form-data" method="post">
-      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Approve</button>
-    </form>
-  {% else %}
-    <p>Already approved</p>
-  {% endif %}
-{% endfor %}
-</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>Caption</th>
+      <th>Time</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for photo in photos %}
+    <tr>
+      <td>
+        <a href="/api/photo/{{ photo.key.urlsafe() }}">
+          <img src="/api/photo/{{ photo.key.urlsafe() }}" class="img-thumbnail" width="300" height="300" />
+        </a>
+      </td>
+      <td>{{ photo.caption }}</td>
+      <td>{{ photo.date.strftime("%A %I:%M %p") }}</td>
+      <td>
+      {% if not photo.approved %}
+        <button onclick="approvePhoto('{{ photo.key.urlsafe() }}')" class="btn btn-success">
+          <span class="glyphicon glyphicon-thumbs-up"></span> Approve
+        </button>
+      {% else %}
+        <p>Already approved!</p>
+        <button onclick="unapprovePhoto('{{ photo.key.urlsafe() }}')" class="btn btn-danger">
+          <span class="glyphicon glyphicon-thumbs-down"></span> Unapprove
+        </button>
+      {% endif %}
+        <p id="{{ photo.key.urlsafe() }}-feedback"></p>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

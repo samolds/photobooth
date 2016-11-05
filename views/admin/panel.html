@@ -4,6 +4,7 @@
 <h2>Admin Panel</h2>
 {% if IS_ADMIN %}
   <p><a href="/admin/moderate">Moderate</a></p>
+  <p><a href="{{ LOGINOUT_URL }}">{{ LOGINOUT_LINKTEXT }}</a></p>
 {% else %}
   <p>Please <a href="{{ LOGINOUT_URL }}">{{ LOGINOUT_LINKTEXT }}</a> to proceed.</p>
 {% endif %}

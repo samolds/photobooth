@@ -1,7 +1,42 @@
 body {
   font-family: 'Questrial', sans-serif;
+  height: 100%;
+  margin: 0;
 }
 
 .pad {
   padding: 40px;
+}
+
+.marg {
+  margin: 10px;
+}
+
+/* from http://stackoverflow.com/a/18490463 */
+.carousel {
+  max-width: 100%;
+  max-height: 100%;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  overflow: auto;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+
+.description {
+  color: #fff;
+  clear: both;
+  position: absolute;
+  max-width: 50%;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  overflow: auto;
+  right: 0;
+}
+
+.word-wrap {
+  word-wrap: break-word;
 }
