@@ -2,40 +2,30 @@
 
 {% block body %}
 <form class="pad" action="/" enctype="multipart/form-data" method="post">
-  <div class="row pad">
-    <div class="col-xs-2"></div>
-    <div class="col-xs-5 form-group">
-      <label for="file-upload">Photo Upload</label>
-      <input type="file" id="file-upload" name="file-upload" required="required">
+  <div class="row pad large">
+    <div class="col-xs-12 form-group form-group-lg">
+      <label for="file-upload" class="control-label">Photo Upload</label>
+      <input type="file" class="form-control input-lg" id="file-upload" name="file-upload" required="required">
     </div>
   </div>
 
-  <div class="row pad">
-    <div class="col-xs-2"></div>
-    <div class="col-xs-5 form-group">
-      <label for="title">Caption</label>
-      <input type="text" class="form-control" id="caption" name="caption" placeholder="Add a caption">
+  <div class="row pad large">
+    <div class="col-xs-12 form-group form-group-lg">
+      <label for="title" class="control-label">Caption</label>
+      <input type="text" class="form-control input-lg" id="caption" name="caption" placeholder="Add a caption">
     </div>
   </div>
 
-  <div class="row pad">
-    <div class="col-xs-2"></div>
-    <div class="col-xs-5">
-      <button type="submit" class="btn btn-default">Post</button>
+  <div class="row pad large">
+    <div class="col-xs-12 form-group form-group-lg">
+      <button type="submit" class="btn btn-default btn-lg">Post</button>
+      <div class="pad"></div>
+      <p>
+        Upload a photo to add it to the slideshow!
+      </p>
     </div>
   </div>
 </form>
-
-<div class="pad"></div>
-
-<div class="row pad">
-  <div class="col-xs-2"></div>
-  <div class="col-xs-5">
-    <p>
-      Upload a photo to add it to the slideshow!
-    </p>
-  </div>
-</div>
 
 <div class="pad"></div>
 

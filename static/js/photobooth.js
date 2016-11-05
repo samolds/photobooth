@@ -1,12 +1,6 @@
 LAST_INDEX = 0;
 PHOTOS = [];
 
-window.setInterval(function() {
-  getLatestPhotoSet();
-  if (PHOTOS.length > 0) {
-    LAST_INDEX = updatePhoto(LAST_INDEX);
-  }
-}, 5000); // 5 seconds
 
 function getLatestPhotoSet() {
   $.ajax({
@@ -38,7 +32,7 @@ function updatePhoto(lastIndex) {
 
 function approvePhoto(photoKey) {
   $.ajax({
-    type: "GET",
+    type: "POST",
     url: "/admin/approve/" + photoKey,
     success: function(data) {
       feedbackElm = document.getElementById(photoKey + "-feedback");
@@ -52,7 +46,7 @@ function approvePhoto(photoKey) {
 
 function unapprovePhoto(photoKey) {
   $.ajax({
-    type: "GET",
+    type: "POST",
     url: "/admin/unapprove/" + photoKey,
     success: function(data) {
       feedbackElm = document.getElementById(photoKey + "-feedback");

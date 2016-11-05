@@ -145,7 +145,7 @@ class Moderate(BaseRequestHandler):
 
 # handler for "/admin/approve/..."
 class Approve(BaseRequestHandler):
-  def get(self, photo_key):
+  def post(self, photo_key):
     key = ndb.Key(urlsafe=photo_key)
     photo = key.get()
     photo.approved = True
@@ -156,7 +156,7 @@ class Approve(BaseRequestHandler):
 
 # handler for "/admin/unapprove/..."
 class Unapprove(BaseRequestHandler):
-  def get(self, photo_key):
+  def post(self, photo_key):
     key = ndb.Key(urlsafe=photo_key)
     photo = key.get()
     photo.approved = False

@@ -2,6 +2,16 @@
 
 {% block script %}
 <script src="/static/js/photobooth.js"></script>
+
+<script>
+  window.setInterval(function() {
+    getLatestPhotoSet();
+    if (PHOTOS.length > 0) {
+      LAST_INDEX = updatePhoto(LAST_INDEX);
+    }
+  }, 7500); // 7.5 seconds
+</script>
+
 <style>
   body {
     background-color: #111;
@@ -20,6 +30,6 @@
 
 <div class="description">
   <p><small class="pull-right" id="time">Sunday 12:09 PM</small></p>
-  <h3 id="caption">Millcreek Gothic</h3>
+  <h3 id="caption" class="word-break">Millcreek Gothic</h3>
 </div>
 {% endblock %}
