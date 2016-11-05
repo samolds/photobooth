@@ -9,7 +9,7 @@ def db_key(db_name=DB_NAME):
 
 
 class Photo(ndb.Model):
-  file_upload = ndb.BlobProperty(indexed=False, required=True)
+  #file_upload = ndb.BlobProperty(indexed=False, required=True)
   caption = ndb.StringProperty(indexed=False)
   date = ndb.DateTimeProperty(auto_now_add=True)
   approved = ndb.BooleanProperty()

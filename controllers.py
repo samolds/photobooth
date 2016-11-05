@@ -8,9 +8,11 @@ import jinja2
 import json
 import os
 
+import cloudstorage as gcs
+from google.appengine.api import app_identity
 
 
-DEBUG = True # TODO turn this off
+DEBUG = False
 
 
 
@@ -38,8 +40,21 @@ class Upload(BaseRequestHandler):
     photo = Photo(parent=db_key(DB_NAME))
     photo.approved = False
     photo.caption = self.request.get('caption')
-    photo.file_upload = self.request.get('file-upload')
+    file_upload = self.request.get('file-upload')
     photo.put()
+
+    bucket_name = os.environ.get('BUCKET_NAME',
+                                 app_identity.get_default_gcs_bucket_name())
+    photo_filename = "/%s/%s" % (bucket_name, photo.key.urlsafe())
+
+    write_retry_params = gcs.RetryParams(backoff_factor=1.1)
+    gcs_file = gcs.open(photo_filename,
+                'w',
+                content_type='image/gif',
+                retry_params=write_retry_params)
+    gcs_file.write(file_upload)
+    gcs_file.close()
+
     self.redirect('')
 
 
@@ -95,7 +110,12 @@ class ApiPhoto(BaseRequestHandler):
     self.response.headers['Content-Type'] = 'image/gif'
 
     if photo != None:
-      self.response.out.write(photo.file_upload)
+      bucket_name = os.environ.get('BUCKET_NAME',
+                                   app_identity.get_default_gcs_bucket_name())
+      photo_filename = "/%s/%s" % (bucket_name, photo_key)
+      gcs_file = gcs.open(photo_filename)
+      self.response.write(gcs_file.read())
+      gcs_file.close()
 
 
 
