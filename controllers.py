@@ -1,5 +1,6 @@
 from google.appengine.api import users
 from google.appengine.ext import ndb
+from datetime import timedelta
 from models import DB_NAME
 from models import db_key
 from models import Photo
@@ -71,12 +72,14 @@ def getAllApprovedPhotos():
   photos = query.fetch()
 
   formatted_photos = []
+  time_zone_pad = timedelta(hours=-5)
   for photo in photos:
     url = "/api/photo/%s" % photo.key.urlsafe()
+    time = photo.date + time_zone_pad
     formatted_photos.append({
       "url": url,
       "caption": photo.caption,
-      "time": photo.date.strftime("%A %I:%M %p"),
+      "time": time.strftime("%A %I:%M %p"),
     })
 
   return formatted_photos

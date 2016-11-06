@@ -43,3 +43,7 @@ body {
 .large {
   font-size: 3em;
 }
+
+.clear {
+  clear: both;
+}
