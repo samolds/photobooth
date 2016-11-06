@@ -16,16 +16,21 @@ function getLatestPhotoSet() {
 }
 
 function updatePhoto(lastIndex) {
-  index = (lastIndex + 1) % PHOTOS.length;
+  var index = (lastIndex + 1) % PHOTOS.length;
+  var srcElm = document.getElementById("carousel");
+  var downloadingImage = new Image();
 
-  srcElm = document.getElementById("carousel");
-  srcElm.src = PHOTOS[index].url;
+  downloadingImage.onload = function() {
+    srcElm.src = this.src;
 
-  captionElm = document.getElementById("caption");
-  captionElm.textContent = PHOTOS[index].caption;
+    var captionElm = document.getElementById("caption");
+    captionElm.textContent = PHOTOS[index].caption;
 
-  timeElm = document.getElementById("time");
-  timeElm.textContent = PHOTOS[index].time;
+    var timeElm = document.getElementById("time");
+    timeElm.textContent = PHOTOS[index].time;
+  };
+
+  downloadingImage.src = PHOTOS[index].url;
 
   return index;
 }
@@ -35,7 +40,7 @@ function approvePhoto(photoKey) {
     type: "POST",
     url: "/admin/approve/" + photoKey,
     success: function(data) {
-      feedbackElm = document.getElementById(photoKey + "-feedback");
+      var feedbackElm = document.getElementById(photoKey + "-feedback");
       feedbackElm.textContent = "successfully approved!";
     },
     error: function(xhr, status, error) {
@@ -49,7 +54,7 @@ function unapprovePhoto(photoKey) {
     type: "POST",
     url: "/admin/unapprove/" + photoKey,
     success: function(data) {
-      feedbackElm = document.getElementById(photoKey + "-feedback");
+      var feedbackElm = document.getElementById(photoKey + "-feedback");
       feedbackElm.textContent = "successfully unapproved!";
     },
     error: function(xhr, status, error) {

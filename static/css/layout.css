@@ -14,7 +14,6 @@ body {
 
 /* from http://stackoverflow.com/a/18490463 */
 .carousel {
-  height: 75%;
   max-width: 100%;
   max-height: 100%;
   bottom: 0;
